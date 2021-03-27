@@ -1,9 +1,6 @@
-import MetamaskMixin from '@/vue/mixins/metamask.mixin'
-
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { vueRoutes } from '@/vue-router/routes'
+import MetamaskMixin from './metamask.mixin'
 import { api } from '@/api'
-import { errors } from '@/js/errors'
+
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -14,7 +11,7 @@ export default {
       setEncodedToken: vuexTypes.SET_ENCODED_TOKEN,
     }),
 
-    async getAddress () {
+    async getAddress() {
       let accountId
       try {
         accountId = await this.getAccount()
@@ -25,23 +22,15 @@ export default {
 
         return accountId
       } catch (error) {
-        switch (error.constructor) {
-          case errors.NotFoundError:
-            const { data: token } =
-              await this.registrationWithMetamask(accountId)
+        const { data: token } = await this.registrationWithMetamask(accountId)
 
-            await this.setEncodedToken({ token })
-            await this.logInAccount({ token })
-            await this.$router.push(vueRoutes.logs)
-
-            break
-          default:
-            ErrorHandler.process(error)
-        }
+        await this.setEncodedToken({ token })
+        await this.logInAccount({ token })
+        // await this.$router.push(vueRoutes.logs)
       }
     },
 
-    async logInWithMetamask (accountId) {
+    async logInWithMetamask(accountId) {
       const signedMessage = await this.getMetemaskMessage(accountId)
       const query = JSON.stringify({
         data: {
@@ -59,7 +48,7 @@ export default {
       return data
     },
 
-    async registrationWithMetamask (accountId) {
+    async registrationWithMetamask(accountId) {
       try {
         const signedMessage = await this.getMetemaskMessage(accountId)
         const query = JSON.stringify({
@@ -77,18 +66,17 @@ export default {
         const data = await api.post('/register', query)
         return data
       } catch (e) {
-        ErrorHandler.process(e)
+        // ErrorHandler.process(e)
       }
     },
 
-    async getMetemaskMessage (accountId) {
+    async getMetemaskMessage(accountId) {
       const { message } = await this.getAuthNonceMessage(accountId)
-      const signedMessage =
-        await this.getSignedMessage(message)
+      const signedMessage = await this.getSignedMessage(message)
       return signedMessage
     },
 
-    async getAuthNonceMessage (account) {
+    async getAuthNonceMessage(account) {
       const query = JSON.stringify({
         data: {
           type: 'auth_nonce_request',

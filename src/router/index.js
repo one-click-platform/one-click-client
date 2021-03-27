@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Auth from '../pages/Auth.vue'
+import Network from '../pages/Network.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Auth',
-    component: Auth,
+    component: Network,
   },
   {
     path: '/about',
@@ -13,7 +13,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../pages/About.vue'),
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../pages/About.vue'),
   },
 ]
 
