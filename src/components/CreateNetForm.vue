@@ -57,6 +57,17 @@
         </div>
       </template>
 
+      <template v-else-if="isFailed">
+        <div
+          class="create-net-form__error-wrp alert alert-dismissible alert-danger"
+        >
+          <p class="create-net-form__error-msg">
+            <strong>Something bad happened</strong>
+          </p>
+          <i class="create-net-form__error-icon bi bi-emoji-frown-fill"></i>
+        </div>
+      </template>
+
       <template v-else>
         <div class="create-net-form__loader-wrp">
           <loader />
@@ -85,6 +96,7 @@ export default {
     isPending: false,
     isLoaded: false,
     isValid: false,
+    isFailed: false,
     data: {},
     form: {
       name: '',
@@ -152,6 +164,7 @@ export default {
         this.isLoaded = true
         this.$router.replace({ query: { privateSsh, privateValidator } })
       } catch (e) {
+        this.isFailed = true
         console.error(e)
       }
     },
@@ -168,7 +181,8 @@ export default {
 .create-net-form {
   &__wrp,
   &__loader-wrp,
-  &__data-wrp {
+  &__data-wrp,
+  &__error-wrp {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -179,8 +193,20 @@ export default {
     background: #fff;
   }
 
+  &__error-wrp {
+    flex-direction: row;
+  }
+
+  &__error-msg {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  &__error-icon {
+    font-size: 3rem;
+  }
+
   &__loader-wrp {
-    width: 42rem;
     height: 30rem;
     padding: 0;
   }
