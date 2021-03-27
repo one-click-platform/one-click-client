@@ -4,9 +4,9 @@ import { api } from '../api'
 
 export const rootModule = {
   actions: {
-    async [vuexTypes.CREATE_NETWORK]({ commit }, { sshKey, name }) {
+    async [vuexTypes.CREATE_NETWORK]({ commit }, { sshKey, networkName }) {
       console.log(api)
-      console.log(sshKey, name)
+      console.log(sshKey, networkName)
       let data = {
         privateSsh:
           'SSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQO',

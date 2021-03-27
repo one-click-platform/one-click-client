@@ -148,7 +148,7 @@ export default {
 
   methods: {
     ...mapActions({
-      setEncodedToken: vuexTypes.SET_ENCODED_TOKEN,
+      createNetwork: vuexTypes.CREATE_NETWORK,
     }),
 
     async submit() {
@@ -159,11 +159,10 @@ export default {
       this.isPending = true
       console.log('Validation passed!')
 
-      let response = {
-        privateSsh:
-          'SSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQO',
-        privateValidator: 'Kqwdkqwpjdqwpdp',
-      }
+      let response = await this.createNetwork({
+        sshKey: 'ASFJQ21DK012KD012KD012KD01',
+        networkName: '4+2.com',
+      })
 
       setTimeout(() => {
         this.data = response
