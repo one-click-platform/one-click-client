@@ -16,21 +16,7 @@
               placeholder="Network name"
               v-model="form.name"
             />
-            <div class="invalid-feedback">Please correct network name</div>
-          </div>
-          <div class="create-net-form__input-wrp">
-            <textarea
-              ref="sshKey"
-              class="form-control create-net-form__textarea"
-              :value="data.sshKey"
-              readonly
-            >
-            </textarea>
-            <i
-              @click="copyToClipboard('sshKey')"
-              class="create-net-form__input-wrp-icon bi bi-sticky-fill"
-            />
-            <div class="invalid-feedback">Please enter valid SSH key</div>
+            <div class="invalid-feedback">Network name is required!</div>
           </div>
           <button class="create-net-form__btn btn btn-primary" type="submit">
             Create network
@@ -85,6 +71,7 @@ import LoginAndRegistrationMixin from '../mixins/login-and-registration.mixin'
 import TrexLoader from './TrexLoader'
 import { vuexTypes } from '@/vuex'
 import { mapActions } from 'vuex'
+import { isEmpty } from 'lodash'
 
 import { required } from '../validators'
 
@@ -95,17 +82,12 @@ export default {
   components: { loader: TrexLoader },
 
   data: () => ({
-    isDisabled: false,
     isPending: false,
     isLoaded: false,
     isValid: false,
-    data: {
-      sshKey:
-        'QWEQQWEQWEQWEWQSADSACCCCCCCCCCDS341RTKG30J09JE098H0G898GHE9WDGSP7VTSCA97SD5ASAYFC89AY8A9CA9S8AFT9',
-    },
+    data: {},
     form: {
       name: '',
-      mmAddress: 'Address',
     },
     validation: {
       form: {
@@ -113,13 +95,17 @@ export default {
           value: true,
           validators: [required],
         },
-        mmAddress: {
-          value: true,
-          validators: [required],
-        },
       },
     },
   }),
+
+  created() {
+    if (!isEmpty(this.$route.query)) {
+      this.data = this.$route.query
+      this.isLoaded = true
+      this.isPending = false
+    }
+  },
 
   watch: {
     'form.name': {
@@ -157,29 +143,17 @@ export default {
       }
 
       this.isPending = true
-      console.log('Validation passed!')
 
-      let response = await this.createNetwork({
-        sshKey: 'ASFJQ21DK012KD012KD012KD01',
-        networkName: '4+2.com',
-      })
+      try {
+        let { privateSsh, privateValidator } = await this.createNetwork({
+          name: this.form.name,
+        })
 
-      setTimeout(() => {
-        this.data = response
         this.isLoaded = true
-      }, 2000)
-
-      // this.isDisabled = true
-      // try {
-      //   await this.connectMetamask()
-      //   const accountId = await this.getAddress()
-      //   const token = await this.create-net-formWithMetamask(accountId)
-      //   await this.setEncodedToken({ token })
-      //   // await this.$router.push(vueRoutes.logs)
-      // } catch (e) {
-      //   console.error('Some error occured:', e)
-      // }
-      // this.isDisabled = false
+        this.$router.replace({ query: { privateSsh, privateValidator } })
+      } catch (e) {
+        console.error(e)
+      }
     },
 
     copyToClipboard(ref) {
@@ -209,26 +183,6 @@ export default {
     width: 42rem;
     height: 30rem;
     padding: 0;
-  }
-
-  &__textarea {
-    resize: none;
-    padding-right: 3rem;
-  }
-
-  &__textarea.form-control {
-    min-height: 15rem;
-    max-height: 15rem;
-  }
-
-  &__textarea-btn.btn-outline-dark,
-  &__textarea.form-control {
-    &:focus,
-    &:active {
-      border: none;
-      box-shadow: none;
-      outline: none;
-    }
   }
 
   &__data-input {

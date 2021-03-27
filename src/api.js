@@ -1,8 +1,4 @@
 import { ApiCaller } from '@/js/api/api-caller'
+import config from './config'
 
-export const api = new ApiCaller()
-
-export async function initApi() {
-  const API_URL = ''
-  api.useBaseURL(API_URL)
-}
+export const api = new ApiCaller({ baseURL: config.BACKEND_URL })

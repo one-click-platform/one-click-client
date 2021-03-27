@@ -6,7 +6,7 @@
     <div class="trex-loader__gif-wrp">
       <img class="trex-loader__gif" src="@/assets/trex.gif" />
     </div>
-    <h1 class="trex-loader__title display-6">Viktor Deploy</h1>
+    <h1 class="trex-loader__title display-6">Viktor is Deploying</h1>
   </div>
 </template>
 

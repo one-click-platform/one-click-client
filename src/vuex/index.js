@@ -4,19 +4,14 @@ import { api } from '../api'
 
 export const rootModule = {
   actions: {
-    async [vuexTypes.CREATE_NETWORK]({ commit }, { sshKey, networkName }) {
-      console.log(api)
-      console.log(sshKey, networkName)
-      let data = {
-        privateSsh:
-          'SSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQOSSSHHSODHQHODQO',
-        privateValidator: 'Kqwdkqwpjdqwpdp',
-      }
-      let { privateSsh, privateValidator } = data
+    async [vuexTypes.CREATE_NETWORK]({ commit }, { name }) {
+      const body = JSON.stringify({ name })
+      let response = await api.post('/envs', body)
+      let { privateSsh, privateValidator } = response.data
 
       commit(vuexTypes.SET_PRIVATE_SSH, privateSsh)
       commit(vuexTypes.SET_PRIVATE_VALIDATOR, privateValidator)
-      return data
+      return response.data
     },
   },
 
@@ -28,6 +23,7 @@ export const rootModule = {
       state.privateValidator = privateValidator
     },
   },
+
   getters: {
     [vuexTypes.privateSsh]: (state) => {
       return state.privateSsh
@@ -36,6 +32,7 @@ export const rootModule = {
       return state.privateValidator
     },
   },
+
   state: {
     privateSsh: '',
     privateValidator: '',
