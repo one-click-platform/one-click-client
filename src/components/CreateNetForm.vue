@@ -172,7 +172,6 @@ export default {
       try {
         await this.createNetwork({ name: this.form.name })
         const data = await this.checkStatus()
-        console.log(data)
         this.data = data
         this.isLoaded = true
         this.$router.replace({ query: { name: data.name } })
@@ -196,7 +195,7 @@ export default {
                     clearInterval(id)
                     resolve(data)
                 }
-           }, 30000);
+           }, 120000);
     })
     }
   },
