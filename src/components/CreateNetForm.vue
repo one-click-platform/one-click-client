@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import LoginAndRegistrationMixin from '../mixins/login-and-registration.mixin'
 import TrexLoader from './TrexLoader'
 import { vuexTypes } from '@/vuex'
 import { mapActions } from 'vuex'
@@ -89,7 +88,6 @@ import { required } from '../validators'
 export default {
   name: 'create-net-form',
 
-  mixins: [LoginAndRegistrationMixin],
   components: { loader: TrexLoader },
 
   data: () => ({
