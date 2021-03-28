@@ -23,6 +23,14 @@ export class ApiCaller {
     })
   }
 
+  get(endpoint, query) {
+    return this._call({
+      method: methods.GET,
+      endpoint,
+      query,
+    })
+  }
+
   async _call(opts) {
     let config = {
       baseURL: this._baseURL,

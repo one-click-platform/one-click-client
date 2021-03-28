@@ -188,10 +188,9 @@ export default {
     },
 
     checkStatus () {
-      const vs = this
     return new Promise(function () {
         let id = setInterval(async (resolve) => {
-          let { data } = await api.get(`/envs/${vs.form.name}`)
+          let { data } = await api.get(`/envs/${this.form.name}`)
                 if (data.status === 'created') {
                     clearInterval(id)
                     resolve(data)
