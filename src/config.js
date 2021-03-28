@@ -28,7 +28,7 @@ function normalize(value) {
 
 export default Object.assign(
   {
-    BACKEND_URL: 'http://3.212.145.152/api',
+    BACKEND_URL: 'https://nft-auction.tk/api',
   },
   process.env ? config : process.env,
   document.ENV ? config : document.ENV
