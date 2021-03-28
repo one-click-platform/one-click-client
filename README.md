@@ -1,24 +1,3 @@
-# 4 + 2
+### One click client
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Web app for initialization deployment infrastructure to AWS with private ethereum network and web application for interaction with system.  
