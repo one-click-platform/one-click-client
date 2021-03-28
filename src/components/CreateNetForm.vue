@@ -31,7 +31,7 @@
               ref="privateSshKey"
               type="text"
               class="create-net-form__data-input form-control"
-              :value="data.privateSsh"
+              :value="data.sshKey"
               readonly
             />
             <i
@@ -45,7 +45,7 @@
               ref="privateValidator"
               type="text"
               class="create-net-form__data-input form-control"
-              :value="data.privateValidator"
+              :value="data.validatorKey"
               readonly
             />
             <i
@@ -53,6 +53,20 @@
               class="create-net-form__input-wrp-icon bi bi-sticky-fill"
             />
             <label class="form-label">Validator private</label>
+          </div>
+          <div class="create-net-form__input-wrp">
+            <input
+              ref="passphrase"
+              type="text"
+              class="create-net-form__data-input form-control"
+              :value="data.passphrase"
+              readonly
+            />
+            <i
+              @click="copyToClipboard('passphrase')"
+              class="create-net-form__input-wrp-icon bi bi-sticky-fill"
+            />
+            <label class="form-label">Passphrase</label>
           </div>
         </div>
       </template>
@@ -84,6 +98,7 @@ import { mapActions } from 'vuex'
 import { isEmpty } from 'lodash'
 
 import { required } from '../validators'
+import { api } from '../api'
 
 export default {
   name: 'create-net-form',
@@ -155,12 +170,12 @@ export default {
       this.isPending = true
 
       try {
-        let { privateSsh, privateValidator } = await this.createNetwork({
-          name: this.form.name,
-        })
-
+        await this.createNetwork({ name: this.form.name })
+        const data = await this.checkStatus()
+        console.log(data)
+        this.data = data
         this.isLoaded = true
-        this.$router.replace({ query: { privateSsh, privateValidator } })
+        this.$router.replace({ query: { name: data.name } })
       } catch (e) {
         this.isFailed = true
         console.error(e)
@@ -171,6 +186,18 @@ export default {
       this.$refs[ref].select()
       document.execCommand('copy')
     },
+
+    checkStatus () {
+    return new Promise(function() {
+        let id = setInterval(async (resolve) => {
+          let { data } = await api.get(`/envs/${this.form.name}`)
+                if (data.status === 'created') {
+                    clearInterval(id)
+                    resolve(data)
+                }
+           }, 30000);
+    })
+    }
   },
 }
 </script>
