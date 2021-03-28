@@ -195,7 +195,7 @@ export default {
             console.log(response)
                 if (response.data.status === 'created') {
                     clearInterval(id)
-                    resolve(data)
+                    resolve(response.data)
                 }
            }, 120000);
     })
