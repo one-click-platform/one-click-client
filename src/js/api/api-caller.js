@@ -28,6 +28,7 @@ export class ApiCaller {
       baseURL: this._baseURL,
       params: opts.query || {},
       method: opts.method,
+      timeout: 1500000,
       paramsSerializer: function (params) {
         return Object.entries(params)
           .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
