@@ -68,6 +68,20 @@
             />
             <label class="form-label">Passphrase</label>
           </div>
+          <div class="create-net-form__input-wrp">
+            <input
+              ref="ip"
+              type="text"
+              class="create-net-form__data-input form-control"
+              :value="data.ip"
+              readonly
+            />
+            <i
+              @click="copyToClipboard('ip')"
+              class="create-net-form__input-wrp-icon bi bi-sticky-fill"
+            />
+            <label class="form-label">IP</label>
+          </div>
         </div>
       </template>
 
@@ -172,7 +186,6 @@ export default {
       try {
         await this.createNetwork({ name: this.form.name })
         const data = await this.checkStatus()
-        console.log('data', data)
         this.data = data
         this.isLoaded = true
         this.$router.replace({ query: { name: data.name } })
@@ -189,8 +202,8 @@ export default {
 
     checkStatus () {
       const vs = this
-    return new Promise(function () {
-        let id = setInterval(async (resolve) => {
+    return new Promise(function (resolve) {
+        let id = setInterval(async () => {
           let response = await api.get(`/envs/${vs.form.name}`)
             console.log(response)
                 if (response.data.status === 'created') {
