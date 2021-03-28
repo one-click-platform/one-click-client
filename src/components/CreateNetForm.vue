@@ -31,7 +31,7 @@
               ref="privateSshKey"
               type="text"
               class="create-net-form__data-input form-control"
-              :value="data.sshKey"
+              :value="data.ssh_key"
               readonly
             />
             <i
@@ -45,7 +45,7 @@
               ref="privateValidator"
               type="text"
               class="create-net-form__data-input form-control"
-              :value="data.validatorKey"
+              :value="data.validator_key"
               readonly
             />
             <i
@@ -172,6 +172,7 @@ export default {
       try {
         await this.createNetwork({ name: this.form.name })
         const data = await this.checkStatus()
+        console.log('data', data)
         this.data = data
         this.isLoaded = true
         this.$router.replace({ query: { name: data.name } })
@@ -190,8 +191,9 @@ export default {
       const vs = this
     return new Promise(function () {
         let id = setInterval(async (resolve) => {
-          let { data } = await api.get(`/envs/${vs.form.name}`)
-                if (data.status === 'created') {
+          let response = await api.get(`/envs/${vs.form.name}`)
+            console.log(response)
+                if (response.data.status === 'created') {
                     clearInterval(id)
                     resolve(data)
                 }
