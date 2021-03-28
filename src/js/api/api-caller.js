@@ -27,6 +27,7 @@ export class ApiCaller {
     let config = {
       baseURL: this._baseURL,
       params: opts.query || {},
+      method: opts.method,
       paramsSerializer: function (params) {
         return Object.entries(params)
           .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
